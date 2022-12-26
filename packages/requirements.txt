@@ -1,2 +1,4 @@
 
 garminconnect
+pypiserver
+pip

@@ -1,9 +1,14 @@
 services:
   python_own:
     image: py
+    container_name: py
     volumes:
         - .:/dir
     build: 
         dockerfile: "Dockerfile"
-  download:
+  py_download:
     image: py
+    container_name: py_download
+    command: pip download -r requirements.txt
+    volumes:
+        - .:/dir

@@ -26,26 +26,36 @@ set(py_exe "C:\\python\\Python38-64\\python.exe")
 set(py_exe "path to pyton.exe required" CACHE STRING "Status of something")
 
 
-IF (${pyplatform} STREQUAL "windows")
-    set(docker_tag 3.12.0a3-windowsservercore-ltsc2022)    
-ELSE()
-    MESSAGE("Error: ${pyplatform}")
-ENDIF()
+file( GLOB server_py pypiserver*.* )
+MESSAGE( "The server install canidate list ${server_py}")
 
+ 
 file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/.ENV "TAG=${docker_tag}")
  
 set(TEX_DOC_BASE document)
 
-add_custom_target(
+add_custom_target( 
     py_download
     COMMAND docker compose up
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
+ 
+add_custom_target(
+    py_server_setup
+    COMMAND ${py_exe} -m venv virt_env
+    COMMAND virt_env\\Scripts\\activate.bat && pip install  ${server_py} && virt_env\\Scripts\\deactivate.bat
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+) 
 
 add_custom_target(
-    server_setup
-    COMMAND ${py_exe} -m venv virt_env
-    COMMAND virt_env\\Scripts\\activate.bat && pip install -r requirements.txt && virt_env\\Scripts\\deactivate.bat
+    py_server_run
+    COMMAND  START  /B cmd /c "virt_env\\Scripts\\activate.bat && pypi-server run -p 1234 .  && virt_env\\Scripts\\deactivate.bat"
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+) 
+
+add_custom_target(
+    py_install
+    COMMAND virt_env\\Scripts\\activate.bat && pip install -r requirements.txt --index-url http://localhost:1234/ && virt_env\\Scripts\\deactivate.bat
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
