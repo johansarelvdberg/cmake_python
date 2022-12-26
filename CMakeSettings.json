@@ -1,0 +1,32 @@
+﻿{
+  "configurations": [
+    {
+      "name": "x64-Get server",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": [
+        {
+          "name": "pyplatform",
+          "value": "windows",
+          "type": "STRING"
+        },
+        {
+          "name": "pyarch",
+          "value": "64",
+          "type": "STRING"
+        },
+        {
+          "name": "py_exe",
+          "value": "C:\\python\\Python38-64\\python.exe",
+          "type": "STRING"
+        }
+      ]
+    }
+  ]
+}

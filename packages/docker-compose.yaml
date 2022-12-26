@@ -1,0 +1,9 @@
+services:
+  python_own:
+    image: py
+    volumes:
+        - .:/dir
+    build: 
+        dockerfile: "Dockerfile"
+  download:
+    image: py
